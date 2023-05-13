@@ -1,5 +1,7 @@
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestResult;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -11,7 +13,10 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 
-public class RadioButtonTests extends ConfigTests{
+public class RadioButtonTests extends ConfigTests implements IRetryAnalyzer {
+
+    private int retryCount = 0;
+    private static final int MAX_RETRY_COUNT = 5;
 
     @BeforeTest
     @Override
@@ -25,18 +30,20 @@ public class RadioButtonTests extends ConfigTests{
         open(baseUrl);
     }
 
-    @Test
+    @Test(groups = "BackEnd", priority = 2)
     public void yes(){
+
         config();
         SoftAssert softAssert = new SoftAssert();
 
-//        $("yesRadio").selectRadio("Yes");
-        SelenideElement yesOption = $(byXpath("//input[@id='yesRadio']"));
-        yesOption.parent().click();
+        $(byXpath("//label[@for='yesRadio']")).click();
 
+        softAssert.assertEquals($(".mt-3").getText(), "Yes");
         softAssert.assertAll();
 
         screenshotRadioButtons();
+
+
 
     }
 
@@ -53,4 +60,12 @@ public class RadioButtonTests extends ConfigTests{
         screenshotRadioButtons();
     }
 
+    @Override
+    public boolean retry(ITestResult iTestResult) {
+        if (retryCount < MAX_RETRY_COUNT) {
+            retryCount++;
+            return true;
+        }
+        return false;
+    }
 }

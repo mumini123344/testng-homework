@@ -1,3 +1,4 @@
+import com.codeborne.selenide.AssertionMode;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 
@@ -8,7 +9,20 @@ import org.testng.annotations.*;
 
 import java.io.File;
 
+import static com.codeborne.selenide.Configuration.assertionMode;
+
 public class ConfigTests {
+
+// ragacebi davamate ro am davalebistvis ufro gamartuli ikos kodi
+//    @BeforeSuite
+//    public void beforeSuite(){
+//        assertionMode = AssertionMode.SOFT;
+//        Configuration.screenshots = true;
+//        Configuration.savePageSource = false;
+//        Configuration.timeout = 500;
+//    }
+
+
 
 
     // ანოტაციები უნდა დამეტოვა თუარა არვარ დარწმუნებული, რო ვუშლი სქრინშოთის მეთოდებს აღარ უშვებდა როცა ვიყენებდი
@@ -16,7 +30,7 @@ public class ConfigTests {
     @BeforeTest
     public void setUp() {
         WebDriverRunner.getWebDriver().manage().window().maximize();
-        Configuration.timeout = 10000;
+        Configuration.timeout = 50000;
         // ეს დაკომენტარებული იმიტორომაქვს რო რაღაც არ გამოდის, ანუ ტესტს უშვებს, ერთი გამოდის და მეორედ როხსნის ბრაუზერს
         // საიტზე აღარ შედის და მეორე გახსნაზე აერორებს და დავტოვე ასე დ შემოწმების დროს სცადეთ მერე და მიხვდებით რასაც ვიძახი
 //        WebDriverManager.chromedriver().setup();
@@ -32,6 +46,7 @@ public class ConfigTests {
         }
 
         Configuration.reportsFolder = "src/main/resources/RadioButtonFailedTests";
+        assertionMode = AssertionMode.SOFT;
         Configuration.screenshots = true;
         Configuration.savePageSource = false;
 
@@ -45,6 +60,7 @@ public class ConfigTests {
         }
 
         Configuration.reportsFolder = "src/main/resources/CheckboxFailedTests";
+        assertionMode = AssertionMode.SOFT;
         Configuration.screenshots = true;
         Configuration.savePageSource = false;
     }
